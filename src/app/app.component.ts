@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
+
+let globalZone: NgZone = null;
 
 @Component({
   selector: 'app-root',
@@ -6,6 +8,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  constructor(private zone: NgZone) {
+    globalZone = zone;
+  }
   title = 'ng-test';
 
   testArraySimple = ['test', 'test', 'test'];
@@ -53,9 +59,10 @@ class TestComponentPromise extends HTMLElement {
 
   render() {
     if (!this.renderScheduled) {
-      Promise.resolve().then(() => {
-        if (this.firstRender) {
-          this.shadowRoot.innerHTML = `<style>
+      globalZone.runOutsideAngular(() => {
+        Promise.resolve().then(() => {
+          if (this.firstRender) {
+            this.shadowRoot.innerHTML = `<style>
           :host { 
             display: block; 
           }</style>
@@ -63,10 +70,11 @@ class TestComponentPromise extends HTMLElement {
           </div>
           <div class="second">
           </div><slot></slot>`;
-          this.firstRender = false;
-        }
-        this.shadowRoot.querySelector('.first').innerHTML = this._internalProp1;
-        this.shadowRoot.querySelector('.second').innerHTML = this._internalProp2;
+            this.firstRender = false;
+          }
+          this.shadowRoot.querySelector('.first').innerHTML = this._internalProp1;
+          this.shadowRoot.querySelector('.second').innerHTML = this._internalProp2;
+        });
       });
     }
   }
@@ -106,6 +114,7 @@ class TestComponentTimeout extends HTMLElement {
 
   render() {
     if (!this.renderScheduled) {
+      globalZone.runOutsideAngular(() => {
       window.setTimeout(() => {
         if (this.firstRender) {
           this.shadowRoot.innerHTML = `<style>
@@ -120,6 +129,7 @@ class TestComponentTimeout extends HTMLElement {
         }
         this.shadowRoot.querySelector('.first').innerHTML = this._internalProp1;
         this.shadowRoot.querySelector('.second').innerHTML = this._internalProp2;
+      });
       });
     }
   }
