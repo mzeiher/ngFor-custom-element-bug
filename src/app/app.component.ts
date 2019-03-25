@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'ng-test';
 
+  testArraySimple = ['test', 'test', 'test'];
   testArray() {
     return ['test', 'test', 'test'].map((value) => {
       return {
