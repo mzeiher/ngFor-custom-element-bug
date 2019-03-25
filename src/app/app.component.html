@@ -1,12 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <!-- does work -->
-<test-component-direct [prop1]="test1" [prop2]="test2" *ngFor="let item of testArray()">{{item.inner}}</test-component-direct>
+<my-element [foo]="item" *ngFor="let item of testArraySimple"></my-element>
 <!-- does not work -->
-<test-component-timeout [prop1]="test1" [prop2]="test2" *ngFor="let item of testArray()">{{item.inner}}</test-component-timeout>
-<test-component-promise [prop1]="test1" [prop2]="test2" *ngFor="let item of testArray()">{{item.inner}}</test-component-promise>
-
-<!-- does work -->
-<test-component-direct [prop1]="item" [prop2]="item" *ngFor="let item of testArraySimple">{{item}}</test-component-direct>
-<test-component-timeout [prop1]="item" [prop2]="item" *ngFor="let item of testArraySimple">{{item}}</test-component-timeout>
-<test-component-promise [prop1]="item" [prop2]="item" *ngFor="let item of testArraySimple">{{item}}</test-component-promise>
-<!-- does not work -->
+<!-- <my-element [foo]="item.inner" *ngFor="let item of testArray()"></my-element> -->
